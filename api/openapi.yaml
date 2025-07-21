@@ -1,0 +1,98 @@
+openapi: 3.0.3
+info:
+  title: TVTrackr API
+  version: 1.0.0
+  description: API to manage users and track TV series using TheTVDB.
+servers:
+  - url: /api/v1
+paths:
+  /register:
+    post:
+      summary: User registration
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        '201':
+          description: User registered
+        '400':
+          description: Validation error
+  /login:
+    post:
+      summary: User login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Login successful
+        '401':
+          description: Invalid credentials
+  /series/search:
+    get:
+      summary: Search TV series in TheTVDB
+      parameters:
+        - in: query
+          name: query
+          schema:
+            type: string
+          required: true
+          description: Search term
+      responses:
+        '200':
+          description: List of series
+  /series/follow:
+    post:
+      summary: Follow a series
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FollowSeriesRequest'
+      responses:
+        '200':
+          description: Series followed
+        '400':
+          description: Validation error
+  /series/followed:
+    get:
+      summary: List followed series
+      responses:
+        '200':
+          description: List of followed series
+components:
+  schemas:
+    RegisterRequest:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      required:
+        - username
+        - password
+    LoginRequest:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      required:
+        - username
+        - password
+    FollowSeriesRequest:
+      type: object
+      properties:
+        seriesId:
+          type: string
+      required:
+        - seriesId
